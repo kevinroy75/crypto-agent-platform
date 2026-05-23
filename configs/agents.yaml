@@ -1,0 +1,45 @@
+# Multi-Agent Crypto Research Platform Configuration
+
+orchestrator:
+  model: mimo-v2.5-pro
+  temperature: 0.3
+  max_tokens: 4096
+  max_iterations: 10
+
+agents:
+  onchain:
+    model: mimo-v2.5-pro
+    temperature: 0.2
+    max_tokens: 4096
+    tools:
+      - get_wallet_balance
+      - get_recent_transactions
+      - detect_whale_movements
+      - analyze_contract
+    chains:
+      - ethereum
+      - solana
+      - base
+      - arbitrum
+
+  market:
+    model: mimo-v2.5-pro
+    temperature: 0.2
+    max_tokens: 4096
+    tools:
+      - get_token_price
+      - get_jupiter_quote
+      - get_trending_tokens
+      - calculate_impermanent_loss
+      - get_top_pairs
+
+  research:
+    model: mimo-v2.5-pro
+    temperature: 0.4
+    max_tokens: 4096
+    tools:
+      - search_arxiv
+      - get_crypto_news
+      - fetch_url_content
+      - analyze_sentiment
+      - search_web
