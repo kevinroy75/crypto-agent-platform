@@ -1,0 +1,118 @@
+# =============================================================================
+# Crypto Agent Platform — Default Configuration
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# General
+# ---------------------------------------------------------------------------
+general:
+  log_level: INFO
+  output_format: text  # text | json | markdown
+  max_iterations: 10
+  timeout_seconds: 120
+
+# ---------------------------------------------------------------------------
+# LLM Backend
+# ---------------------------------------------------------------------------
+llm:
+  provider: openai-compatible
+  api_base: ${LLM_API_BASE:-http://localhost:8080/v1}
+  api_key: ${LLM_API_KEY:-***}
+  model: mimo-v2.5-pro
+  temperature: 0.3
+  max_tokens: 4096
+
+# ---------------------------------------------------------------------------
+# Agent Definitions
+# ---------------------------------------------------------------------------
+agents:
+  orchestrator:
+    name: Orchestrator
+    description: Routes tasks to specialized agents and synthesizes results
+    model: ${ORCHESTRATOR_MODEL:-mimo-v2.5-pro}
+    temperature: 0.2
+    max_tokens: 8192
+
+  onchain:
+    name: OnChain Analyst
+    description: Analyzes blockchain transactions, whale movements, and token flows
+    model: ${ONCHAIN_MODEL:-mimo-v2.5-pro}
+    temperature: 0.1
+    chains:
+      - ethereum
+      - bitcoin
+      - solana
+      - arbitrum
+      - base
+
+  market:
+    name: Market Analyst
+    description: Tracks prices, volumes, sentiment, and market indicators
+    model: ${MARKET_MODEL:-mimo-v2.5-pro}
+    temperature: 0.3
+
+  research:
+    name: Research Analyst
+    description: Deep research on protocols, teams, tokenomics, and narratives
+    model: ${RESEARCH_MODEL:-mimo-v2.5-pro}
+    temperature: 0.4
+
+# ---------------------------------------------------------------------------
+# Workflows
+# ---------------------------------------------------------------------------
+workflows:
+  whale_alert:
+    enabled: true
+    min_value_usd: 100000
+    chains:
+      - ethereum
+      - bitcoin
+      - solana
+    cooldown_seconds: 60
+    scan_interval_seconds: 30
+
+  portfolio_tracker:
+    enabled: true
+    include_defi: true
+    include_nfts: false
+    chains:
+      - ethereum
+      - arbitrum
+      - base
+      - solana
+
+  defi_scanner:
+    enabled: true
+    min_tvl_usd: 1000000
+    min_apy: 1.0
+    max_apy: 500.0
+    max_risk_level: high
+    chains:
+      - ethereum
+      - arbitrum
+      - base
+      - solana
+
+# ---------------------------------------------------------------------------
+# Data Sources
+# ---------------------------------------------------------------------------
+data_sources:
+  blockchain_rpc:
+    ethereum: ${ETH_RPC_URL:-https://eth.llamarpc.com}
+    arbitrum: ${ARB_RPC_URL:-https://arb1.arbitrum.io/rpc}
+    base: ${BASE_RPC_URL:-https://mainnet.base.org}
+    solana: ${SOL_RPC_URL:-https://api.mainnet-beta.solana.com}
+    bsc: ${BSC_RPC_URL:-https://bsc-dataseed.binance.org}
+
+  apis:
+    coingecko:
+      base_url: https://api.coingecko.com/api/v3
+      api_key: ${COINGECKO_API_KEY:-}
+      rate_limit_per_minute: 30
+
+    etherscan:
+      base_url: https://api.etherscan.io/api
+      api_key: ${ETHERSCAN_API_KEY:-}
+
+    defillama:
+      base_url: https://api.llama.fi
